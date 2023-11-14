@@ -1,0 +1,70 @@
+# ----------
+#  Makefile.global.in
+# 
+#       Autoconf input file for Makefile.global for bgpiod
+# 
+#       Copyright (c) 2023 Marc Munro
+#       Author:  Marc Munro
+# 	License: GPL-3.0
+#  
+#  ----------
+
+# location substitutions
+prefix=			@prefix@
+datarootdir=            @datarootdir@
+
+prefix    = @prefix@
+MANDIR    = @mandir@
+PANDOC    = @PANDOC@
+HOST = @HOST@
+
+PKG_BASENAME = @TARNAME@
+PKG_VERSION  = @VERSION@
+PKGNAME = @TARNAME@-@VERSION@
+TARNAME = $(PKGNAME).tar.gz
+
+DIR     := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+DIRNAME := $(notdir $(DIR:/= ))
+
+# Debug, memory checking, etc
+DEBUG=                  @DEBUG@
+CASSERT=                @CASSERT@
+
+# build tools
+CC=			gcc
+
+#build tool flags
+
+ifeq ($(DEBUG),yes)
+    # Debug settings for flags
+    ifeq ($(CC), gcc)
+	CFLAGS = -Wmissing-prototypes -Wmissing-declarations \
+		 -Wparentheses -Wno-format-zero-length \
+		 -Wunused-value -Werror -Wall -ggdb3 -O0
+    else
+	CFLAGS = -g -O0 -Wall
+    endif
+    LDFLAGS =		-ggdb3 -O0
+    DBGSYM  =           -DDEBUG -DWITH_CASSERT
+else
+    # Non-debug settings for flags
+    ifeq ($(CC), gcc)
+	CFLAGS = -Wmissing-prototypes -Wmissing-declarations \
+		 -Wparentheses -Wno-format-zero-length \
+		 -Wunused-value -Werror -Wall -ggdb3 -O2
+    else
+	CFLAGS = -g -O2 -Wall
+    endif
+    LDLAGS = -g -O2
+    ifeq ($(CASSERT),yes)
+        DBGSYM = -DWITH_CASSERT
+    endif
+endif
+
+override CPPFLAGS := -I ./test \
+	 $(CPPFLAGS) \
+	 $(DBGSYM)
+
+LIBS = @LIBS@
+DOXYGEN = @DOXYGEN@
+HELP2MAN = @HELP2MAN@

@@ -1,0 +1,19 @@
+#! /usr/bin/env sh
+# -*- mode: sh -*-
+#
+# bgpio unit tests specific to Le Potato boards.
+
+# Define Board-specific definitions for common tests
+#
+BGPIO_DETECT_CHIP0_SIG="11 lines"
+
+# Board-specific tests begin here
+#
+testDetectIdentifyDevices() {
+    assertEquals D01 2 `./bgpiodetect | wc -l`
+}
+
+# Finally, the common tests (these may use board-specific values
+# defined above.
+#
+.  ${testdir}/common/detect

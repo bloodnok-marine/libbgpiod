@@ -1,0 +1,20 @@
+#! /usr/bin/env sh
+# -*- mode: sh -*-
+#
+# bgpio unit tests specific to Le Potato boards.
+
+# Define Board-specific definitions for common tests
+#
+
+# Board-specific tests begin here
+#
+testInfoGetDevices() {
+    #assertEquals G01 2 `./bgpioget | grep "^gpiochip" | wc -l`
+    >/dev/null
+}
+
+
+# Finally, the common tests (these may use board-specific values
+# defined above.
+#
+.  ${testdir}/common/get

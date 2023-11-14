@@ -1,0 +1,48 @@
+#! /usr/bin/env sh
+# -*- mode: sh -*-
+#
+# bgpio unit tests common to all boards.
+
+
+testDetectParams() {
+    assertContains D11 "`./bgpiodetect /dev/gpiochip0`" "${BGPIO_DETECT_CHIP0_SIG}"
+    assertContains D12 "`./bgpiodetect gpiochip0`" "${BGPIO_DETECT_CHIP0_SIG}"
+    assertContains D13 "`./bgpiodetect chip0`" "${BGPIO_DETECT_CHIP0_SIG}"
+    assertContains D14 "`./bgpiodetect 0`" "${BGPIO_DETECT_CHIP0_SIG}"
+    assertEquals D15 5 `./bgpiodetect 0 0 0 0 0 | grep lines | wc -l`
+    errmsg=`./bgpiodetect /dev/wibble 2>&1 >/dev/null`
+    assertContains D16 "${errmsg}" "may not be a gpio device"
+    assertContains D17 "${errmsg}" "Failed to open"
+}
+
+testDetectHelp() {
+    assertContains D21 "`./bgpiodetect --help`" "display this help"
+    assertContains D22 "`./bgpiodetect -h`" "display this help"
+}
+
+testDetectVersion() {
+    assertContains D31 "`./bgpiodetect --version`" "(libbgpiod)"
+    assertContains D32 "`./bgpiodetect -v`" "License:"
+}
+
+testDetectUnhandledParam() {
+    errmsg=`./bgpiodetect --wibble 2>&1 1>/dev/null`
+    assertContains D41 "${errmsg}" "unrecognized option"
+    assertContains D42 "${errmsg}" "wibble"
+    assertContains D43 "`./bgpiodetect --wibble 2>/dev/null`" "display this help"
+    errmsg=`./bgpiodetect -w 2>&1 1>/dev/null`
+    assertContains D44 "${errmsg}" "invalid option"
+    assertContains D45 "${errmsg}" "'w'"
+    assertContains D46 "`./bgpiodetect -w 2>/dev/null`" "display this help"
+    assertFalse D47 "./bgpiodetect -w >/dev/null 2>&1"
+}
+
+testGetChip() {
+    assertTrue DC01 "./bgpiodetect 0"
+    assertFalse DC02 "./bgpiodetect wibble"
+    errmsg=`./bgpiodetect wibble 2>&1 >/dev/null`
+    assertContains DC03 "${errmsg}" "wibble may not be a gpio device"
+    errmsg=`./bgpiodetect wibble 2>&1 >/dev/null`
+    assertContains DC04 "${errmsg}" "unable to open"
+}
+

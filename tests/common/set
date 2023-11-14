@@ -1,0 +1,98 @@
+#! /usr/bin/env sh
+# -*- mode: sh -*-
+#
+# bgpio unit tests common to all boards.
+
+
+testSetHelp() {
+    assertContains S21 "`./bgpioset --help`" "display this help"
+    assertContains S22 "`./bgpioset -h`" "display this help"
+}
+
+testSetVersion() {
+    assertContains S31 "`./bgpioset --version`" "(libbgpiod)"
+    assertContains S32 "`./bgpioset -v`" "License:"
+}
+
+testSetUnhandledParam() {
+    errmsg=`./bgpioset --wibble 2>&1 1>/dev/null`
+    assertContains S41 "${errmsg}" "unrecognized option"
+    assertContains S42 "${errmsg}" "wibble"
+    assertContains S43 "`./bgpioget --wibble 2>/dev/null`" "display this help"
+    errmsg=`./bgpioset -x 2>&1 1>/dev/null`
+    assertContains S44 "${errmsg}" "invalid option"
+    assertContains S45 "${errmsg}" "'x'"
+    assertContains S46 "`./bgpioset -x 2>/dev/null`" "display this help"
+    assertFalse S47 "./bgpioset -x >/dev/null 2>&1"
+}
+
+testSetActiveLow() {
+    # Check that option is allowed
+    assertTrue SL01 "./bgpioset --active-low 0"
+    assertTrue SL02 "./bgpioset --low 0"
+    assertTrue SL03 "./bgpioset -l 0"
+}
+
+testSetBias() {
+    # Check that option is allowed at all
+    assertTrue SB01 "./bgpioset --bias=pull-up 0"
+    assertTrue SB02 "./bgpioset --bias pull-down 0"
+    assertTrue SB03 "./bgpioset -b disable 0"
+    assertTrue SB04 "./bgpioset -b as-is 0"
+    assertFalse SB05 "./bgpioset -b 0"
+    # Check option supplied without argument
+    errmsg=`./bgpioset -b 2>&1 >/dev/null`
+    assertContains SB06 "${errmsg}" "option requires an argument"
+    assertContains SB07 "`./bgpioset -b 2>/dev/null`" "this help message"
+    assertFalse SB08 "./bgpioset -b 2>/dev/null"
+    errmsg=`./bgpioset --bias 2>&1 >/dev/null`
+    assertContains SB09 "${errmsg}" "'--bias' requires an argument"
+    assertContains SB10 "`./bgpioset --bias 2>/dev/null`" "this help message"
+    assertFalse SB11 "./bgpioset --bias 2>/dev/null"
+    # Check invalid bias value
+    errmsg=`./bgpioset --bias wibble 2>&1 >/dev/null`
+    assertContains SB12 "${errmsg}" "invalid bias value: wibble"
+    assertFalse SB13 "./bgpioset -b open"
+}
+
+testSetOutputDrive() {
+    # Check that option is allowed at all
+    assertTrue SO01 "./bgpioset --output-drive=push-pull 0"
+    assertTrue SO02 "./bgpioset --output open-drain 0"
+    assertTrue SO03 "./bgpioset -o open-source 0"
+    assertFalse SO04 "./bgpioset -o 0"
+    # Check option supplied without argument
+    errmsg=`./bgpioset -o 2>&1 >/dev/null`
+    assertContains SO05 "${errmsg}" "option requires an argument"
+    assertContains SO06 "`./bgpioset -o 2>/dev/null`" "this help message"
+    assertFalse SO07 "./bgpioset -o 2>/dev/null"
+    errmsg=`./bgpioset --output 2>&1 >/dev/null`
+    assertContains SO08 "${errmsg}" "'--output-drive' requires an argument"
+    assertContains SO09 "`./bgpioset --output 2>/dev/null`" "this help message"
+    assertFalse SO10 "./bgpioset --bias 2>/dev/null"
+    # Check invalid output_driver value
+    errmsg=`./bgpioset --output wibble 2>&1 >/dev/null`
+    assertContains SO11 "${errmsg}" "invalid output-drive value: wibble"
+    assertFalse SO12 "./bgpioset -o open"
+}
+
+testSetName() {
+    assertTrue SN01 "./bgpioset --name=wibble 0"
+    assertTrue SN02 "./bgpioset -n wibble 0"
+    assertFalse SN03 "./bgpioset --name"
+    errmsg=`./bgpioset --name 2>&1 >/dev/null`
+    assertContains SN04 "${errmsg}" "'--name' requires an argument"
+    errmsg=`./bgpioset -n 2>&1 >/dev/null`
+    assertContains SN05 "${errmsg}" "option requires an argument"
+}
+
+testSetWait() {
+    assertTrue SW01 "./bgpioset --wait=10 0"
+    assertFalse SW02 "./bgpioset --wait"
+    assertFalse SW03 "./bgpioset -w 99secs"
+    errmsg=`./bgpioset --wait wibble 2>&1 >/dev/null`
+    assertContains SW04 "${errmsg}" "invalid value for seconds: wibble"
+    errmsg=`./bgpioset -w wibble 2>&1 >/dev/null`
+    assertContains SW05 "${errmsg}" "invalid value for seconds: wibble"
+}
+

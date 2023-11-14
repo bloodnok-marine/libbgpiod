@@ -1,0 +1,31 @@
+#! /usr/bin/env sh
+# -*- mode: sh -*-
+#
+# bgpio unit tests specific to Le Potato boards.
+
+# Define Board-specific definitions for common tests
+#
+
+# Board-specific tests begin here
+#
+testInfoIdentifyDevices() {
+    assertEquals I01 2 `./bgpioinfo | grep "^gpiochip" | wc -l`
+}
+
+testInfoIdentifyPins() {
+    assertContains I11 "`./bgpioinfo /dev/gpiochip1 81`" "Pin36" 
+    assertContains I12 "`./bgpioinfo gpiochip1 71 72 73`" ":green" 
+    assertContains I13 "`./bgpioinfo chip1`" ":green" 
+    assertContains I14 "`./bgpioinfo chip1`" "Pin36" 
+    assertContains I15 "`./bgpioinfo 0`" "7J1 Header"
+    errmsg=`./bgpioinfo 0 42 2>&1 >/dev/null`
+    assertContains I16 "${errmsg}" "out of range"
+    errmsg=`./bgpioinfo /dev/wibble 2>&1 >/dev/null`
+    assertContains I17 "${errmsg}" "may not be a gpio device"
+    assertContains I18 "${errmsg}" "Failed to open"
+}
+
+# Finally, the common tests (these may use board-specific values
+# defined above.
+#
+.  ${testdir}/common/info

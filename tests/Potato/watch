@@ -1,0 +1,16 @@
+#! /usr/bin/env sh
+# -*- mode: sh -*-
+#
+# bgpio unit tests specific to Le Potato boards.
+
+# Define Board-specific definitions for common tests
+#
+
+# Board-specific tests begin here
+#
+
+
+# Finally, the common tests (these may use board-specific values
+# defined above.
+#
+.  ${testdir}/common/watch

@@ -1,0 +1,36 @@
+#! /usr/bin/env sh
+# -*- mode: sh -*-
+#
+# bgpio unit tests common to all boards.
+
+
+testInfoHelp() {
+    assertContains I21 "`./bgpioinfo --help`" "display this help"
+    assertContains I22 "`./bgpioinfo -h`" "display this help"
+}
+
+testInfoVersion() {
+    assertContains I31 "`./bgpioinfo --version`" "(libbgpiod)"
+    assertContains I32 "`./bgpioinfo -v`" "License:"
+}
+
+testInfoUnhandledParam() {
+    errmsg=`./bgpioinfo --wibble 2>&1 1>/dev/null`
+    assertContains I41 "${errmsg}" "unrecognized option"
+    assertContains I42 "${errmsg}" "wibble"
+    assertContains I43 "`./bgpioinfo -w 2>/dev/null`" "display this help"
+    errmsg=`./bgpioinfo -w 2>&1 1>/dev/null`
+    assertContains I44 "${errmsg}" "invalid option"
+    assertContains I45 "${errmsg}" "'w'"
+    assertContains I46 "`./bgpioinfo -w 2>/dev/null`" "display this help"
+    assertFalse I47 "./bgpioinfo -w >/dev/null 2>&1"
+}
+
+testInfoChip() {
+    assertTrue IC01 "./bgpioinfo 0"
+    assertFalse IC02 "./bgpioinfo wibble"
+    errmsg=`./bgpioinfo wibble 2>&1 >/dev/null`
+    assertContains IC03 "${errmsg}" "wibble may not be a gpio device"
+    errmsg=`./bgpioinfo wibble 2>&1 >/dev/null`
+    assertContains IC04 "${errmsg}" "unable to open"
+}

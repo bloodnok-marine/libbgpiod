@@ -1,0 +1,38 @@
+#! /usr/bin/env sh
+# -*- mode: sh -*-
+#
+# bgpio system tests.
+#
+# This test suite tests that gpio functionality is properly handled
+# and implemented by the combination of bgpio, the Linux kernel and
+# the system hardware.
+#
+
+# Ensure we can run the tests...
+if which shunit2 >//dev/null 2>&1; then
+    if test -c /dev/gpiochip0; then
+	>/dev/null
+    else
+	echo "No gpio character devices on this host (`hostname`)" 1>&2
+	exit 2
+    fi
+else
+    echo "shunit2 is not installed: unable to run system tests" 1>&2
+    exit 2
+fi
+
+# Determine the board we are to run for (defaulting to Le Potato)
+#
+testdir=`dirname $0`
+board=${1:-Potato}
+
+if [ ! -r ${testdir}/${board}/system ]; then
+    echo "No system test scripts available for ${board}" 1>&2
+    exit 2
+fi
+
+.  ${testdir}/${board}/system
+
+. `which shunit2`
+
+

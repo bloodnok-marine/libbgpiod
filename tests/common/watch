@@ -1,0 +1,68 @@
+#! /usr/bin/env sh
+# -*- mode: sh -*-
+#
+# bgpio unit tests, for bgpiowatch, common to all boards
+
+
+testWatchHelp() {
+    assertContains W21 "`./bgpiowatch --help`" "display this help"
+    assertContains W22 "`./bgpiowatch -h`" "display this help"
+}
+
+testWatchVersion() {
+    assertContains W31 "`./bgpiowatch --version`" "(libbgpiod)"
+    assertContains W32 "`./bgpiowatch -v`" "License:"
+}
+
+testWatchUnhandledParam() {
+    errmsg=`./bgpiowatch --wibble 2>&1 1>/dev/null`
+    assertContains W41 "${errmsg}" "unrecognized option"
+    assertContains W42 "${errmsg}" "wibble"
+    assertContains W43 "`./bgpiowatch --wibble 2>/dev/null`" "display this help"
+    errmsg=`./bgpiowatch -w 2>&1 1>/dev/null`
+    assertContains W44 "${errmsg}" "invalid option"
+    assertContains W45 "${errmsg}" "'w'"
+    assertContains W46 "`./bgpiowatch -w 2>/dev/null`" "display this help"
+    assertFalse W47 "./bgpiowatch -w >/dev/null 2>&1"
+}
+
+testGetRepeat() {
+    assertTrue WR01 "./bgpiowatch --repeat=0 0"
+    assertTrue WR02 "./bgpiowatch -r 2 0"
+    assertFalse WR03 "./bgpiowatch --repeat"
+    assertFalse WR04 "./bgpiowatch -r 99usecs"
+    errmsg=`./bgpiowatch --repeat wibble 2>&1 >/dev/null`
+    assertContains WR05 "${errmsg}" "invalid repeat value: wibble"
+    errmsg=`./bgpiowatch -r wibble 2>&1 >/dev/null`
+    assertContains WR06 "${errmsg}" "invalid repeat value: wibble"
+}
+
+testWatchExec() {
+    assertTrue WX01 "./bgpiowatch --exec=wibble 0"
+    assertTrue WX02 "./bgpiowatch -x wibble 0"
+    assertFalse WX03 "./bgpiowatch --exec"
+    errmsg=`./bgpiowatch --exec 2>&1 >/dev/null`
+    assertContains WX04 "${errmsg}" "'--exec' requires an argument"
+    errmsg=`./bgpiowatch -x 2>&1 >/dev/null`
+    assertContains WX05 "${errmsg}" "option requires an argument"
+}
+
+testWatchChip() {
+    assertTrue WC01 "./bgpiowatch 0"
+    assertFalse WC02 "./bgpiowatch wibble"
+    errmsg=`./bgpiowatch wibble 2>&1 >/dev/null`
+    assertContains C03 "${errmsg}" "wibble may not be a gpio device"
+    errmsg=`./bgpiowatch wibble 2>&1 >/dev/null`
+    assertContains WC04 "${errmsg}" "unable to open"
+}
+
+testWatchTimeout() {
+    assertTrue WT01 "./bgpiowatch --timeout=10 0"
+    assertTrue WT02 "./bgpiowatch -t 10 0"
+    errmsg=`./bgpiowatch --timeout wibble 0 2>&1 >/dev/null`
+    assertContains WT03 "${errmsg}" "invalid timeout value: wibble"
+    errmsg=`./bgpiowatch -t wibble 0 2>&1 >/dev/null`
+    assertContains WT03 "${errmsg}" "invalid timeout value: wibble"
+}
+
+

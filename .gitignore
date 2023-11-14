@@ -1,0 +1,21 @@
+# Ignore backup and temp files
+*~
+\#*#
+\.\#*
+
+
+# html files generated in the docs directory
+docs/*.html
+
+# Generated man files
+man/*
+
+# Objects and dep files
+*.o
+*.d
+*.so
+*.so.[0-9]*.[0-9]*.[0-9]*
+*.a
+*.a.[0-9]*.[0-9]*.[0-9]*
+
+

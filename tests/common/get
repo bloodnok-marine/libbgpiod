@@ -1,0 +1,116 @@
+#! /usr/bin/env sh
+# -*- mode: sh -*-
+#
+# bgpio unit tests common to all boards.
+
+
+testGetHelp() {
+    assertContains G21 "`./bgpioget --help`" "display this help"
+    assertContains G22 "`./bgpioget -h`" "display this help"
+}
+
+testGetVersion() {
+    assertContains G31 "`./bgpioget --version`" "(libbgpiod)"
+    assertContains G32 "`./bgpioget -v`" "License:"
+}
+
+testGetUnhandledParam() {
+    errmsg=`./bgpioget --wibble 2>&1 1>/dev/null`
+    assertContains G41 "${errmsg}" "unrecognized option"
+    assertContains G42 "${errmsg}" "wibble"
+    assertContains G43 "`./bgpioget --wibble 2>/dev/null`" "display this help"
+    errmsg=`./bgpioget -w 2>&1 1>/dev/null`
+    assertContains G44 "${errmsg}" "invalid option"
+    assertContains G45 "${errmsg}" "'w'"
+    assertContains G46 "`./bgpioget -w 2>/dev/null`" "display this help"
+    assertFalse G47 "./bgpioget -w >/dev/null 2>&1"
+}
+
+testGetQuiet() {
+    # Check that option is allowed 
+    assertTrue GQ01 "./bgpioget --quiet 0"
+    assertTrue GQ02 "./bgpioget -q 0"
+}
+
+testGetActiveLow() {
+    # Check that option is allowed
+    assertTrue GL01 "./bgpioget --active-low 0"
+    assertTrue GL02 "./bgpioget --low 0"
+    assertTrue GL03 "./bgpioget -l 0"
+}
+
+testGetBias() {
+    # Check that option is allowed at all
+    assertTrue GB01 "./bgpioget --bias=pull-up 0"
+    assertTrue GB02 "./bgpioget --bias pull-down 0"
+    assertTrue GB03 "./bgpioget -b disable 0"
+    assertTrue GB04 "./bgpioget -b as-is 0"
+    assertFalse GB05 "./bgpioget -b 0"
+    # Check option supplied without argument
+    errmsg=`./bgpioget -b 2>&1 >/dev/null`
+    assertContains GB06 "${errmsg}" "option requires an argument"
+    assertContains GB07 "`./bgpioget -b 2>/dev/null`" "this help message"
+    assertFalse GB08 "./bgpioget -b 2>/dev/null"
+    errmsg=`./bgpioget --bias 2>&1 >/dev/null`
+    assertContains GB09 "${errmsg}" "'--bias' requires an argument"
+    assertContains GB10 "`./bgpioget --bias 2>/dev/null`" "this help message"
+    assertFalse GB11 "./bgpioget --bias 2>/dev/null"
+    # Check invalid bias value
+    errmsg=`./bgpioget --bias wibble 2>&1 >/dev/null`
+    assertContains GB12 "${errmsg}" "invalid bias value: wibble"
+    assertFalse GB13 "./bgpioget -b open"
+}
+
+testGetPeriod() {
+    assertTrue GP01 "./bgpioget --period=100000 0"
+    assertFalse GP02 "./bgpioget --period"
+    assertFalse GP03 "./bgpioget -p 99usecs"
+    errmsg=`./bgpioget --period wibble 2>&1 >/dev/null`
+    assertContains GP04 "${errmsg}" "invalid period value: wibble"
+    errmsg=`./bgpioget -p wibble 2>&1 >/dev/null`
+    assertContains GP05 "${errmsg}" "invalid period value: wibble"
+}
+
+testGetRepeat() {
+    assertTrue GR01 "./bgpioget --repeat=0 0"
+    assertTrue GR02 "./bgpioget -r 2 0"
+    assertFalse GR03 "./bgpioget --repeat"
+    assertFalse GR04 "./bgpioget -r 99usecs"
+    errmsg=`./bgpioget --repeat wibble 2>&1 >/dev/null`
+    assertContains GR05 "${errmsg}" "invalid repeat value: wibble"
+    errmsg=`./bgpioget -r wibble 2>&1 >/dev/null`
+    assertContains GR06 "${errmsg}" "invalid repeat value: wibble"
+}
+
+testGetExec() {
+    assertTrue GE01 "./bgpioget --exec=wibble 0"
+    assertTrue GE02 "./bgpioget -x wibble 0"
+    assertFalse GE03 "./bgpioget --exec"
+    errmsg=`./bgpioget --exec 2>&1 >/dev/null`
+    assertContains GE04 "${errmsg}" "'--exec' requires an argument"
+    errmsg=`./bgpioget -x 2>&1 >/dev/null`
+    assertContains GE05 "${errmsg}" "option requires an argument"
+}
+
+testGetName() {
+    assertTrue GN01 "./bgpioget --name=wibble 0"
+    assertTrue GN02 "./bgpioget -n wibble 0"
+    assertFalse GN03 "./bgpioget --name"
+    errmsg=`./bgpioget --name 2>&1 >/dev/null`
+    assertContains GN04 "${errmsg}" "'--name' requires an argument"
+    errmsg=`./bgpioget -n 2>&1 >/dev/null`
+    assertContains GN05 "${errmsg}" "option requires an argument"
+}
+
+testGetChip() {
+    assertTrue GC01 "./bgpioget 0"
+    assertFalse GC02 "./bgpioget wibble"
+    errmsg=`./bgpioget wibble 2>&1 >/dev/null`
+    assertContains GC03 "${errmsg}" "wibble may not be a gpio device"
+    errmsg=`./bgpioget wibble 2>&1 >/dev/null`
+    assertContains GC04 "${errmsg}" "unable to open"
+    assertFalse GC05 "./bgpioget wibble"
+    errmsg=`./bgpioget 2>&1 >/dev/null`
+    assertContains GC06 "${errmsg}" "No gpio chip id provided"
+}
+

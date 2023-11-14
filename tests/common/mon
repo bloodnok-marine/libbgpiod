@@ -1,0 +1,138 @@
+#! /usr/bin/env sh
+# -*- mode: sh -*-
+#
+# bgpio unit tests, for bgpiomon, common to all boards
+
+
+testMonHelp() {
+    assertContains M21 "`./bgpiomon --help`" "display this help"
+    assertContains M22 "`./bgpiomon -h`" "display this help"
+}
+
+testMonVersion() {
+    assertContains M31 "`./bgpiomon --version`" "(libbgpiod)"
+    assertContains M32 "`./bgpiomon -v`" "License:"
+}
+
+testMonUnhandledParam() {
+    errmsg=`./bgpiomon --wibble 2>&1 1>/dev/null`
+    assertContains M41 "${errmsg}" "unrecognized option"
+    assertContains M42 "${errmsg}" "wibble"
+    assertContains M43 "`./bgpiomon --wibble 2>/dev/null`" "display this help"
+    errmsg=`./bgpiomon -w 2>&1 1>/dev/null`
+    assertContains M44 "${errmsg}" "invalid option"
+    assertContains M45 "${errmsg}" "'w'"
+    assertContains M46 "`./bgpiomon -w 2>/dev/null`" "display this help"
+    assertFalse M47 "./bgpiomon -w >/dev/null 2>&1"
+}
+
+testMonActiveLow() {
+    # Check that option is allowed
+    assertTrue ML01 "./bgpiomon --active-low 0"
+    assertTrue ML02 "./bgpiomon --low 0"
+    assertTrue ML03 "./bgpiomon -l 0"
+}
+
+testMonBias() {
+    # Check that option is allowed at all
+    assertTrue MB01 "./bgpiomon --bias=pull-up 0"
+    assertTrue MB02 "./bgpiomon --bias pull-down 0"
+    assertTrue MB03 "./bgpiomon -b disable 0"
+    assertTrue MB04 "./bgpiomon -b as-is 0"
+    assertFalse MB05 "./bgpiomon -b 0"
+    # Check option supplied without argument
+    errmsg=`./bgpiomon -b 2>&1 >/dev/null`
+    assertContains MB06 "${errmsg}" "option requires an argument"
+    assertContains MB07 "`./bgpiomon -b 2>/dev/null`" "this help message"
+    assertFalse MB08 "./bgpiomon -b 2>/dev/null"
+    errmsg=`./bgpiomon --bias 2>&1 >/dev/null`
+    assertContains MB09 "${errmsg}" "'--bias' requires an argument"
+    assertContains MB10 "`./bgpiomon --bias 2>/dev/null`" "this help message"
+    assertFalse MB11 "./bgpiomon --bias 2>/dev/null"
+    # Check invalid bias value
+    errmsg=`./bgpiomon --bias wibble 2>&1 >/dev/null`
+    assertContains MB12 "${errmsg}" "invalid bias value: wibble"
+    assertFalse MB13 "./bgpiomon -b open"
+}
+
+testMonName() {
+    assertTrue MN01 "./bgpiomon --name=wibble 0"
+    assertTrue MN02 "./bgpiomon -n wibble 0"
+    assertFalse MN03 "./bgpiomon --name"
+    errmsg=`./bgpiomon --name 2>&1 >/dev/null`
+    assertContains MN04 "${errmsg}" "'--name' requires an argument"
+    errmsg=`./bgpiomon -n 2>&1 >/dev/null`
+    assertContains MN05 "${errmsg}" "option requires an argument"
+}
+
+testMonExec() {
+    assertTrue MX01 "./bgpiomon --exec=wibble 0"
+    assertTrue MX02 "./bgpiomon -x wibble 0"
+    assertFalse MX03 "./bgpiomon --exec"
+    errmsg=`./bgpiomon --exec 2>&1 >/dev/null`
+    assertContains MX04 "${errmsg}" "'--exec' requires an argument"
+    errmsg=`./bgpiomon -x 2>&1 >/dev/null`
+    assertContains MX05 "${errmsg}" "option requires an argument"
+}
+
+testMonEdge() {
+    assertTrue ME01 "./bgpiomon --edge=rising 0"
+    assertTrue ME02 "./bgpiomon --edge falling 0"
+    #assertTrue ME03 "./bgpiomon -e both 0" # both is not currently implemented
+    assertFalse ME04 "./bgpiomon --edge"
+    errmsg=`./bgpiomon --edge 2>&1 >/dev/null`
+    assertContains ME05 "${errmsg}" "'--edge' requires an argument"
+    errmsg=`./bgpiomon -e 2>&1 >/dev/null`
+    assertContains ME06 "${errmsg}" "option requires an argument"
+    assertFalse ME07 "./bgpiomon --edge pull-up"
+    errmsg=`./bgpiomon --edge pull-up 2>&1 >/dev/null`
+    assertContains ME08 "${errmsg}" "invalid edge-detection value"
+}
+
+testMonQuiet() {
+    assertTrue MQ01 "./bgpiomon --quiet 0"
+    assertTrue MQ02 "./bgpiomon -q 0"
+}
+
+testMonRepeat() {
+    assertTrue MR01 "./bgpiomon --repeat 1 0"
+    assertTrue MR02 "./bgpiomon -r 10 0"
+    errmsg=`./bgpiomon --repeat 2>&1 >/dev/null`
+    assertContains MR03 "${errmsg}" "'--repeat' requires an argument"
+    errmsg=`./bgpiomon -r 2>&1 >/dev/null`
+    assertContains MR04 "${errmsg}" "option requires an argument"
+    assertFalse MR05 "./bgpiomon --edge pull-up"
+    errmsg=`./bgpiomon --repeat 17x 2>&1 >/dev/null`
+    assertContains MR06 "${errmsg}" "invalid repeat value"
+}
+
+testMonDebounce() {
+    assertTrue MD01 "./bgpiomon --debounce 0 0"
+    assertTrue MD02 "./bgpiomon -d 10 0"
+    errmsg=`./bgpiomon --debounce 2>&1 >/dev/null`
+    assertContains MD03 "${errmsg}" "'--debounce' requires an argument"
+    errmsg=`./bgpiomon -d 2>&1 >/dev/null`
+    assertContains MS04 "${errmsg}" "option requires an argument"
+    assertFalse MD05 "./bgpiomon --debounce 88s"
+    errmsg=`./bgpiomon --d 17x 2>&1 >/dev/null`
+    assertContains MD06 "${errmsg}" "invalid debounce value"
+}
+
+testMonChip() {
+    assertTrue MC01 "./bgpiomon 0"
+    assertFalse MC02 "./bgpiomon wibble"
+    errmsg=`./bgpiomon wibble 2>&1 >/dev/null`
+    assertContains MC03 "${errmsg}" "wibble may not be a gpio device"
+    errmsg=`./bgpiomon wibble 2>&1 >/dev/null`
+    assertContains MC04 "${errmsg}" "unable to open"
+}
+
+testMonTimeout() {
+    assertTrue MT01 "./bgpiomon --timeout=10 0 0"
+    assertTrue MT02 "./bgpiomon -t 10 0 0"
+    errmsg=`./bgpiomon --timeout wibble 0 0 2>&1 >/dev/null`
+    assertContains MT03 "${errmsg}" "invalid timeout value: wibble"
+    errmsg=`./bgpiomon -t wibble 0 0 2>&1 >/dev/null`
+    assertContains MT03 "${errmsg}" "invalid timeout value: wibble"
+}
+

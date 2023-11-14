@@ -1,0 +1,47 @@
+#! /usr/bin/env sh
+# -*- mode: sh -*-
+#
+# bgpio unit tests.
+#
+# These do not strictly conform to what unit tests should be as they
+# require appropriate gpio hardware on the system in order to run.
+# The requirement however is only that the hardware exists: we do not
+# test features of the hardware, or how bgpio interacts with that
+# hardware.  Primarily, these tests ensure that command line arguments
+# are correctly handled.
+#
+
+testdir=`dirname $0`
+PATH=${testdir}/../bin:$PATH
+# Ensure we can run the tests...
+if which shunit2 >//dev/null 2>&1; then
+    if test -c /dev/gpiochip0; then
+	>/dev/null
+    else
+	echo "No gpio character devices on this host (`hostname`)" 1>&2
+	exit 2
+    fi
+else
+    echo "shunit2 is not installed: unable to run unit tests" 1>&2
+    exit 2
+fi
+
+# Determine the board we are to run for (defaulting to Le Potato)
+#
+board=${1:-Potato}
+
+if [ ! -r ${testdir}/${board}/detect ]; then
+    echo "No unit test scripts available for ${board}" 1>&2
+    exit 2
+fi
+
+.  ${testdir}/${board}/detect
+.  ${testdir}/${board}/info
+.  ${testdir}/${board}/get
+.  ${testdir}/${board}/set
+.  ${testdir}/${board}/mon
+.  ${testdir}/${board}/watch
+
+. `which shunit2`
+
+

@@ -1,0 +1,91 @@
+#! /usr/bin/env sh
+# -*- mode: sh -*-
+#
+# bgpio system tests specific to the SBC: Le Potato
+
+# Define Board-specific definitions for common tests
+#
+
+GPIODEVICE=gpiochip1
+UNRESERVED_GPIO_INPUT1=81
+
+# TODO: Move this to common
+testGetExistingReservation() {
+    # Check that existing reservations cannot be got
+    assertContains GER01 "`./bgpioinfo ${GPIODEVICE} 73`" "librecomputer:green"
+    assertFalse GER02 "./bgpioget ${GPIODEVICE} 73"
+    errmsg=`./bgpioget 1 73 2>&1 >/dev/null`
+    assertContains GER03 "${errmsg}" "unable to get line"
+    assertContains GER04 "${errmsg}" "registered to librecomputer:green"
+}
+
+# TODO: Move this to common
+testGetLineStatus() {
+    # Run bpioget indefinitely in the background
+    ./bgpioget -p 10000000 -r 0 -q -l -n wibble -b pull-up \
+	       ${GPIODEVICE} ${UNRESERVED_GPIO_INPUT1}&
+    bgpioget_pid=$!
+    sleep 0.2 # Allow time for previous command to run
+    # Check that reservation is recorded and visisble
+    info="`./bgpioinfo ${GPIODEVICE} ${UNRESERVED_GPIO_INPUT1}`"
+    assertContains GLS01 "${info}" wibble
+    assertContains GLS02 "${info}" input
+    assertContains GLS03 "${info}" pull-up
+    assertContains GLS04 "${info}" active-low
+
+    # Kill background job
+    kill -15 ${bgpioget_pid}
+    # Check that reservation is no longer visible.
+    assertNotContains GLS05 \
+		   "`./bgpioinfo ${GPIODEVICE} ${UNRESERVED_GPIO_INPUT1}`" \
+		   wibble
+
+    ./bgpioget -p 10000000 -r 0 -q -l -n wubble -b pull-up \
+	       ${GPIODEVICE} ${UNRESERVED_GPIO_INPUT1}[pull-down,high]&
+    bgpioget_pid=$!
+    sleep 0.2 # Allow time for previous command to run
+    info="`./bgpioinfo ${GPIODEVICE} ${UNRESERVED_GPIO_INPUT1}`"
+    echo "${info}" >~/tmp
+    assertContains GLS06 "${info}" wubble
+    assertContains GLS07 "${info}" input
+    assertContains GLS08 "${info}" pull-down
+    assertNotContains GLS09 "${info}" active-low
+
+    # Kill background job
+    kill -15 ${bgpioget_pid}
+    # Check that reservation is no longer visible.
+    assertNotContains GLS04 \
+		   "`./bgpioinfo ${GPIODEVICE} ${UNRESERVED_GPIO_INPUT1}`" \
+		   wubble
+}
+
+testSetLineStatus() {
+    # Run bpioset indefinitely in the background
+    ./bgpioset --wait 100 -b pull-up -n crumbly --low -o open-drain \
+         ${GPIODEVICE} ${UNRESERVED_GPIO_INPUT1}=0&
+    bgpioset_pid=$!
+    sleep 0.2
+    info="`./bgpioinfo ${GPIODEVICE} ${UNRESERVED_GPIO_INPUT1}`"
+    assertContains SLS01 "${info}" crumbly
+    assertContains SLS02 "${info}" output
+    assertContains SLS03 "${info}" pull-up
+    assertContains SLS04 "${info}" active-low
+    assertContains SLS05 "${info}" open-drain
+
+    # Kill background job
+    kill -15 ${bgpioset_pid}
+
+    ./bgpioset --wait 100 -b pull-up -n crumbly --low -o open-drain \
+               ${GPIODEVICE} \
+	       ${UNRESERVED_GPIO_INPUT1}[disable,high,open-source]=0&
+    bgpioset_pid=$!
+    sleep 0.2
+    info="`./bgpioinfo ${GPIODEVICE} ${UNRESERVED_GPIO_INPUT1}`"
+    assertContains SLS06 "${info}" crumbly
+    assertContains SLS07 "${info}" output
+    assertNotContains SLS08 "${info}" pull
+    assertNotContains SLS09 "${info}" active-low
+    assertContains SLS10 "${info}" "open-source"
+    assertContains SLS11 "${info}" "bias-disabled"
+    kill -15 ${bgpioset_pid}
+}
