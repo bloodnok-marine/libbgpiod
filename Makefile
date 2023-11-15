@@ -525,7 +525,7 @@ gitdocs pages: docs
 	git add docs
 	git commit -a -m "Docs release `date +%Y%m%d-%H%M%S`"
 	git push
-	@echo "Returning to master branch"
+	@echo "Returning to master branch..."
 	mv docs dox/html
 	mv dox docs
 	git checkout master
