@@ -526,8 +526,7 @@ gitdocs pages: docs
 	git commit -a -m "Docs release `date +%Y%m%d-%H%M%S`"
 	git push
 	@echo "Returning to master branch..."
-	mv docs dox/html
-	mv dox docs
+	rm -rf dox docs 2>&1 | true
 	git checkout master
 
 ifdef HELP2MAN
