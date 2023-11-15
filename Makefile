@@ -326,25 +326,26 @@ $(TARNAME):
 
 # Create debian package
 #
-#DEB_NAME  = $(PKG_BASENAME)_$(PKG_VERSION)
-#DEB_TAR   = $(DEB_NAME).orig.tar.gz
-#DEB_DIR   = packaging/$(PKGNAME)/debian
-#deb: tar
-#	set -x; cd packaging; \
-#	cp ../$(TARNAME) .; \
-#	tar xzvf $(TARNAME)
-#	cd packaging/$(PKGNAME) && \
-#	debmake
-#	@echo Copying initial patches into place
-#	@cp debian/patches/* packaging/$(PKGNAME)/debian/patches
-#	echo packaging/$(PKGNAME)
-#	cd packaging/$(PKGNAME) && \
-#	debuild -us -uc
+DEB_NAME  = $(PKG_BASENAME)_$(PKG_VERSION)
+DEB_TAR   = $(DEB_NAME).orig.tar.gz
+DEB_DIR   = packaging/$(PKGNAME)/debian
+deb: tar
+	echo "set -x; cd deb-build; \
+	cp ../$(TARNAME) .; \
+	tar xzvf $(TARNAME)"
+	exit 2
+	cd packaging/$(PKGNAME) && \
+	debmake
+	@echo Copying initial patches into place
+	@cp debian/patches/* packaging/$(PKGNAME)/debian/patches
+	echo packaging/$(PKGNAME)
+	cd packaging/$(PKGNAME) && \
+	debuild -us -uc
 
-#debclean:
-#	echo DEBCLEAN
-#	chmod 755 $(DEB_DIR) 2>/dev/null || true
-#	rm -rf packaging/*gz packaging/$(PKGNAME)
+debclean:
+	echo DEBCLEAN
+	chmod 755 $(DEB_DIR) 2>/dev/null || true
+	rm -rf packaging/*gz packaging/$(PKGNAME)
 
 
 ################################################################
@@ -507,7 +508,6 @@ docs/html: $(ALL_SOURCES) $(OTHER_DOC_SOURCES) docs/Doxyfile \
 	external/gpio.h
 	@echo Building html documentation using doxygen...
 	$(DOXYGEN) docs/Doxyfile
-	@touch docs/.nojekyl # Make github pages accept this
 	@touch $@
 
 else
