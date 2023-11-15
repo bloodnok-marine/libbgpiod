@@ -520,15 +520,15 @@ docs: docs/html
 gitdocs pages: docs
 	@echo "Preparing for release to github-pages..."
 	git checkout gh-pages
-	{ \
-	  mv docs dox \
-	  mv dox/html docs \
-	  git add docs \
-	  git commit -a -m "Docs release `date +%Y%m%d-%H%M%S`" \
-	  git push \
-	  echo "Returning to master branch..." \
-	  rm -rf dox docs 2>&1 \
-	  true }
+	( \
+	  mv docs dox; \
+	  mv dox/html docs; \
+	  git add docs; \
+	  git commit -a -m "Docs release `date +%Y%m%d-%H%M%S`"; \
+	  git push; \
+	  echo "Returning to master branch..."; \
+	  rm -rf dox docs 2>&1; \
+	  true )
 	git checkout -f master
 
 ifdef HELP2MAN
