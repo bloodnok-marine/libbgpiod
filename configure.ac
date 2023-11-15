@@ -16,12 +16,12 @@
 # second is version number
 # third is bug report address: TODO: add this
 #
-AC_INIT([libbgpiod], [0.1.0])
+AC_INIT([libbgpiod], [0.2.0])
 
 # Check for source dir existance.
 #
 AC_CONFIG_SRCDIR([lib/bgpiod.h])
-AC_SUBST([VERSIONDATE], ["September 2023"])
+AC_SUBST([VERSIONDATE], ["November 2023"])
 AC_SUBST([AUTHOR], ["Marc Munro <marc@bloodnok.com>"])
 
 # Should we want to install by default in /usr/bin rather /usr/local/bin

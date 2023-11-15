@@ -30,7 +30,7 @@
 #
 .PHONY:	DEFAULT all xfer prep_for_xfer deps \
 	unit runit systest rsystest \
-	docs man help \
+	gitdocs pages docs man help \
 	install uninstall \
 	tarball tar \
 	tidy do_tidy clean do_clean distclean
@@ -507,6 +507,7 @@ docs/html: $(ALL_SOURCES) $(OTHER_DOC_SOURCES) docs/Doxyfile \
 	external/gpio.h
 	@echo Building html documentation using doxygen...
 	$(DOXYGEN) docs/Doxyfile
+	@touch docs/.nojekyl # Make github pages accept this
 	@touch $@
 
 else
@@ -515,6 +516,19 @@ docs/html: $(ALL_SOURCES)
 endif
 
 docs: docs/html
+
+gitdocs pages: docs
+	@echo "Preparing for release to github-pages..."
+	git checkout gh-pages
+	mv docs dox
+	mv dox/html docs
+	git add docs
+	git commit -a -m "Docs release `date +%Y%m%d-%H%M%S`"
+	git push
+	@echo "Returning to master branch"
+	mv docs dox/html
+	mv dox docs
+	git checkout master
 
 ifdef HELP2MAN
 man:	$(MANPAGES)
@@ -532,10 +546,12 @@ help:
 	@echo "  all         - build everything (lib, tools, docs)"
 	@echo "  clean       - remove all generated, backup and target files"
 	@echo "  distclean   - as clean but also remove all auto-generated files"
-	@echo "  docs        - build pandoc documentation (into docs/html)"
+	@echo "  docs        - build doxygen documentation (into docs/html)"
+	@echo "  gitdocs     - release docs to github-pages"
 	@echo "  help        - list major makefile targets"
 	@echo "  install     - install lib, headers and tools"
 	@echo "  man         - build man pages"
+	@echo "  pages       - release docs to github-pages (alias for gitdocs)"
 	@echo "  runit       - run unit tests on target host"
 	@echo "  rsystest    - run systest on target host"
 	@echo "  systest     - run system integration/consistency tests"
