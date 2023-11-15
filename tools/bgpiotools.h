@@ -35,7 +35,7 @@
 /** 
  * Version information for output to user.
  */
-#define VERSION   "0.2.0"
+#define VERSION   "0.3.0"
 
 /**
  * Bitmask for all gpio line bias flags.
