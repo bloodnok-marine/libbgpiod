@@ -3,8 +3,8 @@
 
 This is a gpio device library for Linux.
 
-Note the extra 'b' in libbgpio.  This is not a fork of the fine
-libbgpio, nor is it a plug-in replacement.
+Note the extra 'b' in libbgpiod.  This is not a fork of the fine
+libbgpiod, nor is it a plug-in replacement.
 
 It does however aims to be functionally equivalent and easier to use.
 
