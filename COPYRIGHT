@@ -1,0 +1,6 @@
+libbgpiod - A simple, easy to use GPIO library for Linux
+
+Copyright (c) 2013  Marc Munro,
+
+This software is released under the GPL version 3 license.
+See the LICENSE file distributed with this software.

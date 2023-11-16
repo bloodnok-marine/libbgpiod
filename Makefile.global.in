@@ -21,7 +21,7 @@ HOST = @HOST@
 PKG_BASENAME = @TARNAME@
 PKG_VERSION  = @VERSION@
 PKGNAME = @TARNAME@-@VERSION@
-TARNAME = $(PKGNAME).tar.gz
+TARNAME = $(PKGNAME).tar.xz
 
 DIR     := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 DIRNAME := $(notdir $(DIR:/= ))

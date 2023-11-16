@@ -1,0 +1,6 @@
+libbgpiod (0.3.0-1) UNRELEASED; urgency=low
+
+  * Initial release. Closes: #nnnn
+    <nnnn is the bug number of your ITP>
+
+ -- Marc Munro <marc@bloodnok.com>  Wed, 15 Nov 2023 16:49:24 -0800

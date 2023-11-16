@@ -285,16 +285,20 @@ systest: $(TARGETS)
 
 install: all
 	$(FEEDBACK) INSTALL $(LIBS)
-	$(AT) install -D $(LIBS) $(DESTDIR)$(prefix)/lib
+	$(AT) install -D --target-directory=$(DESTDIR)$(prefix)/lib $(LIBS) 
 	@cd $(DESTDIR)$(prefix)/lib; \
 	  ln -s $(SHLIB).$(PKG_VERSION) $(SHLIB) 2>/dev/null; \
 	  ln -s $(STLIB).$(PKG_VERSION) $(STLIB) 2>/dev/null; true
 	$(FEEDBACK) INSTALL $(LIB_HEADERS)
-	$(AT) install -D $(LIB_HEADERS) $(DESTDIR)$(prefix)/include/bgpiod/.
+	$(AT) install -D \
+	    --target-directory=$(DESTDIR)$(prefix)/include/bgpiod \
+	    $(LIB_HEADERS) 
 	$(FEEDBACK) INSTALL $(TOOLS)
-	$(AT) install -D $(TOOLS) $(DESTDIR)$(prefix)/bin
+	$(AT) install -D --target-directory=$(DESTDIR)$(prefix)/bin $(TOOLS) 
 	$(FEEDBACK) INSTALL $(MANPAGES)
-	$(AT) install -D $(MANPAGES) $(DESTDIR)$(prefix)/share/man/man1
+	$(AT) install -D \
+	    --target-directory=$(DESTDIR)$(prefix)/share/man/man1 \
+	    $(MANPAGES) 
 
 uninstall:
 	$(FEEDBACK) UNINSTALL $(LIBS)
@@ -318,9 +322,10 @@ $(TARNAME):
 	     --exclude='*gz' \
 	     --exclude='autom4te.cache' \
 	     --exclude=TODO \
-	     --exclude=debian \
+	     --exclude=deb-build \
+	     --exclude=docs/doxygen.log \
 	     --transform='s!^$(DIRNAME)\(/\|$$\)!$(PKGNAME)\1!' \
-	     --gzip -f "$(TARNAME)" "$(DIRNAME)"
+	     -f - "$(DIRNAME)" | xz -z - >$(TARNAME)
 	@mv ../$(TARNAME) .
 	@echo Done
 
@@ -329,23 +334,16 @@ $(TARNAME):
 DEB_NAME  = $(PKG_BASENAME)_$(PKG_VERSION)
 DEB_TAR   = $(DEB_NAME).orig.tar.gz
 DEB_DIR   = packaging/$(PKGNAME)/debian
-deb: tar
-	echo "set -x; cd deb-build; \
+deb: $(TARNAME)
+	set -x; cd deb-build; \
 	cp ../$(TARNAME) .; \
-	tar xzvf $(TARNAME)"
-	exit 2
-	cd packaging/$(PKGNAME) && \
-	debmake
-	@echo Copying initial patches into place
-	@cp debian/patches/* packaging/$(PKGNAME)/debian/patches
-	echo packaging/$(PKGNAME)
-	cd packaging/$(PKGNAME) && \
+	xzcat $(TARNAME) | tar xvf -; \
+	cd $(PKGNAME) && \
+	debmake --targz=tar.xz --yes; \
 	debuild -us -uc
 
 debclean:
-	echo DEBCLEAN
-	chmod 755 $(DEB_DIR) 2>/dev/null || true
-	rm -rf packaging/*gz packaging/$(PKGNAME)
+	@rm -rf deb-build/* 2>/dev/null || true
 
 
 ################################################################
@@ -369,11 +367,12 @@ do_tidy:
 clean: do_clean
 	@echo Done
 
-do_clean: do_tidy
+do_clean: do_tidy debclean
 	@ echo Removing generated files...
 	@rm -rf docs/html 2>/dev/null || true
 	@rm -f $(TARGETS) $(ALL_OBJECTS) $(SHLIB) $(STLIB) $(LIBS) \
-		$(MANPAGES) $(MANPAGES_HTML) $(DEPS) 2>/dev/null || true
+		$(MANPAGES) $(MANPAGES_HTML) $(DEPS) \
+		$(CONFIGURE_TARGETS) 2>/dev/null || true
 	@rm -rf external 2>/dev/null || true
 
 distclean: do_clean 
@@ -507,7 +506,7 @@ docs/Doxyfile: docs/Doxyfile.in
 docs/html: $(ALL_SOURCES) $(OTHER_DOC_SOURCES) docs/Doxyfile \
 	external/gpio.h
 	@echo Building html documentation using doxygen...
-	$(DOXYGEN) docs/Doxyfile
+	$(DOXYGEN) docs/Doxyfile >docs/doxygen.log 2>&1
 	@touch $@
 
 else
