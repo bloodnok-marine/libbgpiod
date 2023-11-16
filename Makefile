@@ -144,6 +144,7 @@ garbage := \\\#*  .\\\#*  *~
 ALL_GARBAGE = $(garbage) $(garbage:%=lib/%) \
 	      $(garbage:%=tools/%) $(garbage:%=docs/%) \
 	      $(garbage:%=man/%) $(garbage:%=examples/%) \
+	      $(garbage:%=tests/%) $(garbage:%=debian/%) \
 	      $(garbage:%=bin/%)
 
 
@@ -196,6 +197,8 @@ endif
 # Explicit deps target.  Primarily for debugging.
 #
 deps: $(DEPS)
+
+$(DEPS): $(CONFIGURE_TARGETS)
 
 # Dependency file for each executable being based on its namesake
 # object in the tools dir.
@@ -312,7 +315,7 @@ uninstall:
 	$(FEEDBACK) UNINSTALL $(MANPAGE_FILES)
 	$(AT) rm $(MANPAGE_FILES:%=$(DESTDIR)$(prefix)/share/man/man1/%) || true
 
-tarball tar: tidy all $(TARNAME)
+tarball tar: clean $(TARNAME)
 
 $(TARNAME):
 	@echo "Creating $(TARNAME)..."
