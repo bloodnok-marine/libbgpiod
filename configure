@@ -3588,7 +3588,7 @@ _ACEOF
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to enable debugging" >&5
 $as_echo_n "checking whether to enable debugging... " >&6; }
-debug_default="yes"
+debug_default="no"
 # Check whether --enable-debug was given.
 if test "${enable_debug+set}" = set; then :
   enableval=$enable_debug;

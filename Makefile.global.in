@@ -38,32 +38,30 @@ CC=			gcc
 ifeq ($(DEBUG),yes)
     # Debug settings for flags
     ifeq ($(CC), gcc)
-	CFLAGS = -Wmissing-prototypes -Wmissing-declarations \
-		 -Wparentheses -Wno-format-zero-length \
-		 -Wunused-value -Werror -Wall -ggdb3 -O0
+	CFLAGS += -Wmissing-prototypes -Wmissing-declarations \
+		  -Wparentheses -Wno-format-zero-length \
+		  -Wunused-value -Werror -Wall -ggdb3 -O0
     else
-	CFLAGS = -g -O0 -Wall
+	CFLAGS += -g -O0 -Wall
     endif
-    LDFLAGS =		-ggdb3 -O0
-    DBGSYM  =           -DDEBUG -DWITH_CASSERT
+    LDFLAGS +=	-ggdb3 -O0
+    DBGSYM  =   -DDEBUG -DWITH_CASSERT
 else
     # Non-debug settings for flags
     ifeq ($(CC), gcc)
-	CFLAGS = -Wmissing-prototypes -Wmissing-declarations \
+	CFLAGS += -Wmissing-prototypes -Wmissing-declarations \
 		 -Wparentheses -Wno-format-zero-length \
-		 -Wunused-value -Werror -Wall -ggdb3 -O2
+		 -Wunused-value -Werror -Wall -ggdb3 -O1
     else
-	CFLAGS = -g -O2 -Wall
+	CFLAGS += -g -O1 -Wall
     endif
-    LDLAGS = -g -O2
+    LDLAGS += -g -O1
     ifeq ($(CASSERT),yes)
         DBGSYM = -DWITH_CASSERT
     endif
 endif
 
-override CPPFLAGS := -I ./test \
-	 $(CPPFLAGS) \
-	 $(DBGSYM)
+override CPPFLAGS += $(DBGSYM)
 
 LIBS = @LIBS@
 DOXYGEN = @DOXYGEN@

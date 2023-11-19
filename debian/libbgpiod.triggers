@@ -1,0 +1,4 @@
+# M Munro
+# Ensure ldconfig is run after installing libs
+#
+activate-noawait ldconfig 

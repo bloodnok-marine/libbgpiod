@@ -31,6 +31,12 @@
 #define THIS_EXECUTABLE "bgpioget"
 
 /**
+ * Summary line used by build to create the whatis entry for the man
+ * page. 
+ */
+#define SUMMARY get gpio input
+
+/**
  * Provide a usage message and exit.
  *
  * @param exitcode The value to be returned from gpsud by exit().
@@ -207,7 +213,7 @@ perform_fetches(bgpio_request_t *request,
     static bool first_time = true;
     int result;
     int i;
-    int val;
+    int val = 0;
     int line;
     bool report;
     result =  bgpio_fetch(request);
@@ -235,9 +241,14 @@ perform_fetches(bgpio_request_t *request,
 		}
 		if (exec) {
 		    char *command_str = malloc(strlen(exec) + 30);
+		    int err;
 		    sprintf(command_str, "%s %s %d %d", exec,
 			    request->chardev_path, line, val);
-		    system(command_str);
+		    err = system(command_str);
+		    if (err) {
+			fprintf(stderr, "%s: \"%s\" failed: %d\n\n",
+				THIS_EXECUTABLE, command_str, err);
+		    }
 		}
 	    }
 	}
@@ -266,6 +277,13 @@ main(int argc, char *argv[])
     uint64_t default_bias = 0;
     uint64_t line_flags = 0;
     char **names;
+    int c;
+    int idx = 0;
+    bgpio_request_t *request;
+    int line;
+    char *line_name;
+    int line_value = 0;
+    int err;
     
     /**
      * Command line options structure for getopt_long()
@@ -284,13 +302,6 @@ main(int argc, char *argv[])
 	{"version", no_argument, NULL, 0},
 	{NULL, 0, NULL, 0}};
     
-    int c;
-    int idx = 0;
-    bgpio_request_t *request;
-    int line;
-    int last_line_value = 0;
-    char *line_name;
-    int err;
     
     while ((c = getopt_long(argc, argv, "b:dhln:p:qr:vx:",
 			    options, &idx)) != -1)
@@ -423,22 +434,22 @@ main(int argc, char *argv[])
 	}
 
 	idx = repeat;
-	while (true) {
-	    last_line_value = perform_fetches(request, (bool) quiet,
-					      (bool) report_delta,
-					      exec, names);
+	while (idx >= 0) {
+	    line_value = perform_fetches(request, (bool) quiet,
+					 (bool) report_delta,
+					 exec, names);
 	    if (repeat) {
 		/* If repeat is zero we want an infinite number of
 		 * repeats */
 		idx--;
-		if (idx < 1) {
-		    break;
-		}
 	    }
 	    usleep(period);
 	}
     }
     err = bgpio_close_request(request);
-    exit (err? err: last_line_value);
+    if (err) {
+	exit(err);
+    }
+    exit(line_value);
 }
 

@@ -33,6 +33,7 @@
 	gitdocs pages docs man help \
 	install uninstall \
 	tarball tar \
+	deb \
 	tidy do_tidy clean do_clean distclean
 
 # Do not use make's built-in rules
@@ -50,7 +51,10 @@ endif
 # Definitions
 #
 
+MAJOR_VERSION=$(shell echo $(PKG_VERSION) | cut -d. -f1)
+
 LIBNAME = $(PKG_BASENAME)
+SONAME = $(LIBNAME).so.$(MAJOR_VERSION)
 
 # Tools are the executables shipped with the package.
 # They are defined in the tools directory, with executables being
@@ -113,7 +117,7 @@ SHLIB = $(LIBNAME).so
 # Static library
 STLIB = $(LIBNAME).a
 
-LIBS = $(SHLIB).$(PKG_VERSION) $(STLIB).$(PKG_VERSION)
+LIBS = $(SHLIB).$(PKG_VERSION) $(STLIB)
 
 # Everything we will build for the default target,
 #
@@ -144,8 +148,8 @@ garbage := \\\#*  .\\\#*  *~
 ALL_GARBAGE = $(garbage) $(garbage:%=lib/%) \
 	      $(garbage:%=tools/%) $(garbage:%=docs/%) \
 	      $(garbage:%=man/%) $(garbage:%=examples/%) \
-	      $(garbage:%=tests/%) $(garbage:%=debian/%) \
-	      $(garbage:%=bin/%)
+	      $(garbage:%=tests/%) $(garbage:%=tests/*/%) \
+	      $(garbage:%=debian/%) $(garbage:%=bin/%)
 
 
 ###########
@@ -157,6 +161,7 @@ ALL_GARBAGE = $(garbage) $(garbage:%=lib/%) \
 # FEEDBACK2 is used in multi-line shell commands where part of the
 # command can usefully provide feedback.
 #
+VERBOSE = 1
 ifdef VERBOSE
     FEEDBACK = @true
     FEEDBACK2 = true
@@ -205,7 +210,7 @@ $(DEPS): $(CONFIGURE_TARGETS)
 #
 tools/tools.d: $(TOOL_SOURCES) $(SHLIB)
 	$(FEEDBACK) "  MAKE DEP" $@
-	echo $(TOOL_SOURCES) | \
+	$(AT) echo $(TOOL_SOURCES) | xargs -n 1 | \
 	    sed -e 's!\(.*/\(.*\)\).c!\2: \1.o $(SHLIB)!' >$@ || rm $@
 
 # Create dependency file for each man page being based on its namesake
@@ -286,22 +291,29 @@ systest: $(DEFAULT_TARGETS)
 # Install targets
 #
 
-install: all
+# ARCH will be defined in Multiarch Debian build environments
+#
+ARCH = $(DEB_HOST_MULTIARCH)
+
+install: $(DEFAULT_TARGETS)
 	$(FEEDBACK) INSTALL $(LIBS)
-	$(AT) install -D --target-directory=$(DESTDIR)$(prefix)/lib $(LIBS) 
-	@cd $(DESTDIR)$(prefix)/lib; \
+	$(AT) install -D \
+	    --target-directory=$(DESTDIR)$(prefix)/lib/$(ARCH) $(LIBS)
+	@cd $(DESTDIR)$(prefix)/lib/$(ARCH); \
 	  ln -s $(SHLIB).$(PKG_VERSION) $(SHLIB) 2>/dev/null; \
-	  ln -s $(STLIB).$(PKG_VERSION) $(STLIB) 2>/dev/null; true
+	  ln -s $(SHLIB).$(PKG_VERSION) $(SONAME) 2>/dev/null; true
 	$(FEEDBACK) INSTALL $(LIB_HEADERS)
 	$(AT) install -D \
 	    --target-directory=$(DESTDIR)$(prefix)/include/bgpiod \
-	    $(LIB_HEADERS) 
+	    $(LIB_HEADERS)
 	$(FEEDBACK) INSTALL $(TOOLS)
-	$(AT) install -D --target-directory=$(DESTDIR)$(prefix)/bin $(TOOLS) 
-	$(FEEDBACK) INSTALL $(MANPAGES)
 	$(AT) install -D \
+	    --target-directory=$(DESTDIR)$(prefix)/bin/ $(TOOLS) 
+	$(FEEDBACK) INSTALL $(MANPAGES)
+	-$(AT) install -D \
 	    --target-directory=$(DESTDIR)$(prefix)/share/man/man1 \
 	    $(MANPAGES) 
+	@echo You should now run ldconfig
 
 uninstall:
 	$(FEEDBACK) UNINSTALL $(LIBS)
@@ -337,7 +349,7 @@ $(TARNAME):
 DEB_NAME  = $(PKG_BASENAME)_$(PKG_VERSION)
 DEB_TAR   = $(DEB_NAME).orig.tar.gz
 DEB_DIR   = packaging/$(PKGNAME)/debian
-deb: $(TARNAME)
+deb: clean $(TARNAME)
 	set -x; cd deb-build; \
 	cp ../$(TARNAME) .; \
 	xzcat $(TARNAME) | tar xvf -; \
@@ -471,17 +483,19 @@ $(TOOLS): $(SHLIB)
 
 %.so:
 	$(FEEDBACK) "  $(CCNAME)" $@
-	$(AT) $(CC) -shared -fPIC -o $@.$(PKG_VERSION) $<
+	$(AT) $(CC) $(LDFLAGS) -shared -fPIC -Wl,-soname,$(SONAME) \
+	    -o $@.$(PKG_VERSION) $<
 	@ln -s $@.$(PKG_VERSION) $@ 2>/dev/null || true
 
 %.a:
 	$(FEEDBACK) "  AR" $@
-	$(AT) ar rcs $@.$(PKG_VERSION) $<
-	@ln -s $@.$(PKG_VERSION) $@ 2>/dev/null || true
+	$(AT) ar rcs $@ $<
 
 %.1:
 	$(FEEDBACK) "  HELP2MAN" $@
-	$(AT) help2man --no-info ./$(*F) >$@ || rm $@
+	$(AT) name=`grep "#define.*SUMMARY" tools/$<.c | cut -d" " -f3-`; \
+	    help2man --name="$${name:- from libbgpiod}" \
+	    --no-info ./$(*F) >$@ || rm $@
 
 # Building html versions of man pages.  Note that we change h1 to h3
 # in the output, as that renders better and is easier than messing with
@@ -494,14 +508,14 @@ $(TOOLS): $(SHLIB)
 
 ifdef DOXYGEN
 
-# Create a local link to gpio.h so that its structures can be
+# Create a local copy of gpio.h so that its structures can be
 # documented.
 external/gpio.h: lib/bgpiod.d
 	@[ -d external ] || mkdir external
 	$(AT) if [ ! -h external/gpio.h ]; then \
-	    $(FEEDBACK2) LN $@; \
+	    $(FEEDBACK2) CP $@; \
 	    cat lib/bgpiod.d | xargs -n 1 | grep gpio.h | \
-	      xargs -i ln -s {} external; \
+	      xargs -i cp {} external; \
 	fi
 
 docs/Doxyfile: docs/Doxyfile.in

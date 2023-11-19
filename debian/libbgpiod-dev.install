@@ -1,0 +1,3 @@
+usr/lib/*/libbgpiod.a
+usr/lib/*/libbgpiod.so
+usr/include/bgpiod/bgpiod.h

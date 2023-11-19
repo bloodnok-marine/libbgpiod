@@ -1,0 +1,33 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: libbgpiod
+Upstream-Contact: Marc Munro <marc@bloodnok.com>
+Source: git@github.com:bloodnok-marine/libbgpiod.git
+#
+# Please double check copyright with the licensecheck(1) command.
+
+Files: *
+Copyright: 2023 Marc Munro <marc@bloodnok.com>
+License: GPL-3
+
+Files:     debian/*
+Copyright: 2023 Marc Munro <marc@bloodnok.com>
+License: GPL-3
+
+Files: examples/*
+Copyright: 2023 Marc Munro <marc@bloodnok.com>
+License: CC0
+
+Files: bin/shunit2
+Copyright: 2008-2021 Kate Ward <kate.ward@forestent.com>
+License: Apache-2.0
+
+License: Apache-2.0
+ /usr/share/common-licenses/Apache-2.0
+
+License: GPL-3
+ /usr/share/common-licenses/GPL-3
+
+
+License: CC0
+ /usr/share/common-licenses/CC0-1.0
+

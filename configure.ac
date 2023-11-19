@@ -46,7 +46,7 @@ AC_FUNC_REALLOC
 AC_TYPE_SIGNAL
 
 AC_MSG_CHECKING(whether to enable debugging)
-debug_default="yes"
+debug_default="no"
 AC_ARG_ENABLE(debug, [  --enable-debug=[no/yes] turn on debugging
                        [default=$debug_default]],, enable_debug=$debug_default)
 

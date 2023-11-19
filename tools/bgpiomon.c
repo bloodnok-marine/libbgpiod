@@ -42,6 +42,12 @@
 #define THIS_EXECUTABLE "bgpiomon"
 
 /**
+ * Summary line used by build to create the whatis entry for the man
+ * page. 
+ */
+#define SUMMARY monitor gpio line values
+
+/**
  * Provide a usage message and exit.
  * @param exitcode The value to be returned from gpsud by exit().
  */
@@ -288,12 +294,17 @@ process_edge(bgpio_request_t *request, bool quiet,
     
     if (exec) {
 	char *command_str = malloc(strlen(exec) + 80);
+	int err;
 	sprintf(command_str, "%s %s %d %d %lld %d %d",
 		exec, request->chardev_path,
 		p_event->offset, result,
 		p_event->timestamp_ns,
 		p_event->line_seqno, p_event->seqno);
-	system(command_str);
+	err = system(command_str);
+	if (err) {
+	    fprintf(stderr, "%s: \"%s\" failed: %d\n\n",
+		    THIS_EXECUTABLE, command_str, err);
+	}
     }
     return result;
 }

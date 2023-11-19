@@ -34,6 +34,12 @@
 #define THIS_EXECUTABLE "bgpioset"
 
 /**
+ * Summary line used by build to create the whatis entry for the man
+ * page. 
+ */
+#define SUMMARY set gpio outputs
+
+/**
  * Provide a usage message and exit.
  *
  * @param exitcode The value to be returned from gpsud by exit().

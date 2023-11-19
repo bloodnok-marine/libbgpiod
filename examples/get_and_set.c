@@ -2,7 +2,8 @@
  *     Copyright (c) 2023 Marc Munro
  *     Fileset: libbgpiod - basic/bloodnok gpio device library
  *     Author:  Marc Munro
- *     License: GPL-3.0
+ *     License: CC0 - the contents of this file are dedicated to the
+ *                    public domain.
  *
  */
 

@@ -34,6 +34,12 @@ version(char *this_name)
     printf("%s (libbgpiod) " VERSION "\n", this_name);
     printf(COPYRIGHT "\n");
     printf(LICENSE "\n");
+
+    printf("\nThis program comes with ABSOLUTELY NO WARRANTY.\n"
+	   "This is free software, and you are welcome to redistribute it "
+	   "under certain\n"
+	   "conditions; see the terms of the "
+	   "GNU GENERAL PUBLIC LICENSE Version 3.\n");
     exit(0);
 }
 

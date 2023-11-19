@@ -31,6 +31,11 @@
  */
 #define THIS_EXECUTABLE "bgpioinfo"
 
+/**
+ * Summary line used by build to create the whatis entry for the man
+ * page. 
+ */
+#define SUMMARY list gpio line information
 
 /**
  * Provide a usage message and exit.
@@ -39,7 +44,7 @@
 static void
 usage(int exitcode)
 {
-    printf("\nUsage: " THIS_EXECUTABLE " [OPTIONS] [gpiochip id] [line-no]...\n\n"
+    printf("Usage: " THIS_EXECUTABLE " [OPTIONS] [gpiochip id] [line-no]...\n\n"
 	   "List information about gpio lines for gpio chips.\n"
 	   "If no chip is specified, list for all chips.\n"
 	   "If no lines are specified list all lines.\n\n"

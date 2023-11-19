@@ -31,6 +31,12 @@
  */
 #define THIS_EXECUTABLE "bgpiodetect"
 
+/**
+ * Summary line used by build to create the whatis entry for the man
+ * page. 
+ */
+#define SUMMARY list gpio chips
+
 
 /**
  * Provide a usage message and exit.

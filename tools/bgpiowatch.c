@@ -27,6 +27,12 @@
 #define THIS_EXECUTABLE "bgpiowatch"
 
 /**
+ * Summary line used by build to create the whatis entry for the man
+ * page. 
+ */
+#define SUMMARY monitor gpio line configuration
+
+/**
  * Provide a usage message and exit.
  * @param exitcode The value to be returned from gpsud by exit().
  */
