@@ -356,6 +356,7 @@ DEB_NAME  = $(PKG_BASENAME)_$(PKG_VERSION)
 DEB_TAR   = $(DEB_NAME).orig.tar.gz
 DEB_DIR   = packaging/$(PKGNAME)/debian
 deb: clean $(TARNAME)
+	@[ -d deb-build ] || mkdir deb-build
 	set -x; cd deb-build; \
 	cp ../$(TARNAME) .; \
 	xzcat $(TARNAME) | tar xvf -; \

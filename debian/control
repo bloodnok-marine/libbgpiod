@@ -6,6 +6,9 @@ Build-Depends: debhelper-compat (= 12),
                autoconf,
 	       help2man,
 	       doxygen,
+	       pandoc,
+	       graphviz,
+	       texlive-latex-base,
 	       m4,
 	       linux-libc-dev (>= 4.8)
 Standards-Version: 4.5.1

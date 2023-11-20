@@ -81,11 +81,15 @@ if test -z "$DOXYGEN"; then
 else
   AC_CHECK_PROGS([DOT], [dot])
   if test -z "$DOT"; then
-    AC_MSG_ERROR([Doxygen needs dot, please install dot first])
+    AC_MSG_ERROR([Doxygen needs dot, please install dot (available in graphviz)])
   fi
   AC_CHECK_PROGS([PDFLATEX], [pdflatex])
   if test -z "$PDFLATEX"; then
     AC_MSG_ERROR([Doxygen needs pdflatex program, it is part of TeX http://www.tug.org/texlive/acquire-netinstall.html])
+  fi
+  AC_CHECK_PROGS([PANDOC], [pandoc])
+  if test -z "$PANDOC"; then
+    AC_MSG_ERROR([Document build needs pandoc program, please install pandoc])
   fi
 fi
 
