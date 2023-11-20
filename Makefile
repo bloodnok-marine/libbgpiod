@@ -161,7 +161,7 @@ ALL_GARBAGE = $(garbage) $(garbage:%=lib/%) \
 # FEEDBACK2 is used in multi-line shell commands where part of the
 # command can usefully provide feedback.
 #
-VERBOSE = 1
+
 ifdef VERBOSE
     FEEDBACK = @true
     FEEDBACK2 = true
