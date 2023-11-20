@@ -3,6 +3,12 @@
 \#*#
 \.\#*
 
+# Files created by build
+Makefile.global
+config.log
+config.status
+docs/Doxyfile
+tools/bgpiotools.h
 
 # html files generated in the docs directory
 docs/*.html
