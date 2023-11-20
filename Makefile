@@ -539,7 +539,7 @@ endif
 
 docs: docs/html
 
-gitdocs pages: doc
+gitdocs pages: docs
 	@echo "Preparing for release to github-pages..."
 	git checkout gh-pages
 	( \
