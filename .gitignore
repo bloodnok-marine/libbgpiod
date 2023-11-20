@@ -11,8 +11,19 @@ docs/Doxyfile
 tools/bgpiotools.h
 
 # html files generated in the docs directory
-docs/*.html
+docs/html
 docs/doxygen.log
+
+# The external directory (used for docs)
+external/
+
+# The executables
+bgpiodetect
+bgpioget
+bgpioinfo
+bgpiomon
+bgpioset
+bgpiowatch
 
 # Generated man files
 man/*
