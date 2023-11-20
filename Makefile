@@ -30,7 +30,7 @@
 #
 .PHONY:	DEFAULT all xfer prep_for_xfer deps \
 	unit runit systest rsystest \
-	gitdocs pages doc docs man help \
+	gitdocs pages docs man help \
 	install uninstall \
 	tarball tar \
 	deb \
@@ -91,7 +91,7 @@ MANPAGES = $(TOOLS:%=man/%.1)
 MANPAGES_HTML = $(TOOLS:%=man/%.html)
 MANPAGE_FILES = $(notdir $(MANPAGES))
 
-OTHER_DOC_SOURCES = doc/libbgpiod.md $(MANPAGES_HTML) \
+OTHER_DOC_SOURCES = docs/libbgpiod.md $(MANPAGES_HTML) \
 	$(wildcard examples/*.c)
 
 # Files that configure manipulates.  If any of these get modified, we
@@ -101,7 +101,7 @@ CONFIGURE_INFILES = Makefile.global.in tools/bgpiotools.h.in
 HEADERS += tools/bgpiotools.h.in
 
 ifdef DOXYGEN
-  CONFIGURE_INFILES += doc/Doxyfile.in
+  CONFIGURE_INFILES += docs/Doxyfile.in
 endif
 
 CONFIGURE_TARGETS = $(CONFIGURE_INFILES:%.in=%)
@@ -121,7 +121,7 @@ LIBS = $(SHLIB).$(PKG_VERSION) $(STLIB)
 
 # Everything we will build for the default target,
 #
-DEFAULT_TARGETS = $(TOOLS) $(STLIB) $(SHLIB) man doc
+DEFAULT_TARGETS = $(TOOLS) $(STLIB) $(SHLIB) man docs
 
 # Everything that will be build by the "all" target.
 #
@@ -146,7 +146,7 @@ ALL_TESTTOOLS = bin/shunit2
 #
 garbage := \\\#*  .\\\#*  *~ 
 ALL_GARBAGE = $(garbage) $(garbage:%=lib/%) \
-	      $(garbage:%=tools/%) $(garbage:%=doc/%) \
+	      $(garbage:%=tools/%) $(garbage:%=docs/%) \
 	      $(garbage:%=man/%) $(garbage:%=examples/%) \
 	      $(garbage:%=tests/%) $(garbage:%=tests/*/%) \
 	      $(garbage:%=debian/%) $(garbage:%=bin/%)
@@ -255,7 +255,7 @@ prep_for_xfer:
 	@mkdir -p lib tools man doc examples tests \
 		tests/common tests/Potato bin
 	@chmod +w -f tools/bgpiotools.h Makefile.global || true
-	@[ -f doc/Doxyfile ] && chmod +w -f doc/Doxyfile || true
+	@[ -f docs/Doxyfile ] && chmod +w -f docs/Doxyfile || true
 
 runit: .xfer_tests xfer
 	@echo "Copying tests to $(REMOTE)..."
@@ -316,7 +316,7 @@ install: $(DEFAULT_TARGETS)
 	$(FEEDBACK) INSTALL doc/html
 	-$(AT) install -D \
 	    --target-directory=$(DESTDIR)$(prefix)/share/doc/libbgpiod/html \
-	    doc/html/*
+	    docs/html/*
 	@echo You should now run ldconfig
 
 uninstall:
@@ -344,7 +344,7 @@ $(TARNAME):
 	     --exclude='autom4te.cache' \
 	     --exclude=TODO \
 	     --exclude=deb-build \
-	     --exclude=doc/doxygen.log \
+	     --exclude=docs/doxygen.log \
 	     --transform='s!^$(DIRNAME)\(/\|$$\)!$(PKGNAME)\1!' \
 	     -f - "$(DIRNAME)" | xz -z - >$(TARNAME)
 	@mv ../$(TARNAME) .
@@ -390,7 +390,7 @@ clean: do_clean
 
 do_clean: do_tidy debclean
 	@ echo Removing generated files...
-	@rm -rf doc/html 2>/dev/null || true
+	@rm -rf docs/html 2>/dev/null || true
 	@rm -f $(ALL_TARGETS) $(ALL_OBJECTS) $(SHLIB) $(STLIB) $(LIBS) \
 		$(MANPAGES) $(MANPAGES_HTML) $(DEPS) \
 		$(CONFIGURE_TARGETS) 2>/dev/null || true
@@ -398,7 +398,7 @@ do_clean: do_tidy debclean
 
 distclean: do_clean 
 	@ echo Removing autoconf generated files...
-	@rm -rf Makefile.global configure doc/Doxyfile \
+	@rm -rf Makefile.global configure docs/Doxyfile \
 	        aclocal.m4 autom4te.cache 2>/dev/null || true
 	@echo Done
 
@@ -427,7 +427,7 @@ Makefile.global: Makefile.global.in
 $(CONFIGURE_TARGETS)  &: configure
 	./configure
 	chmod -w -f tools/bgpiotools.h Makefile.global
-	-[ -f doc/Doxyfile ] && chmod -w -f doc/Doxyfile
+	-[ -f docs/Doxyfile ] && chmod -w -f docs/Doxyfile
 
 # Automatically regenerate configure when configure.ac has been
 # updated.  This rule allows for the non-existence of configure.ac and
@@ -524,20 +524,20 @@ external/gpio.h: lib/bgpiod.d
 	      xargs -i cp {} external; \
 	fi
 
-doc/Doxyfile: doc/Doxyfile.in
+docs/Doxyfile: docs/Doxyfile.in
 
-doc/html: $(ALL_SOURCES) $(OTHER_DOC_SOURCES) doc/Doxyfile \
+docs/html: $(ALL_SOURCES) $(OTHER_DOC_SOURCES) docs/Doxyfile \
 	external/gpio.h
 	@echo Building html documentation using doxygen...
-	$(DOXYGEN) doc/Doxyfile >doc/doxygen.log 2>&1
+	$(DOXYGEN) docs/Doxyfile >docs/doxygen.log 2>&1
 	@touch $@
 
 else
-doc/html: $(ALL_SOURCES) 
+docs/html: $(ALL_SOURCES) 
 	@echo "\nDoxygen is not installed - cannot build docs.\n"
 endif
 
-doc docs: doc/html
+docs: docs/html
 
 gitdocs pages: doc
 	@echo "Preparing for release to github-pages..."
@@ -569,7 +569,7 @@ help:
 	@echo "  all         - build everything (lib, tools, doc)"
 	@echo "  clean       - remove all generated, backup and target files"
 	@echo "  distclean   - as clean but also remove all auto-generated files"
-	@echo "  doc        - build doxygen documentation (into doc/html)"
+	@echo "  docs        - build doxygen documentation (into docs/html)"
 	@echo "  gitdocs     - release docs to github-pages"
 	@echo "  help        - list major makefile targets"
 	@echo "  install     - install lib, headers and tools"

@@ -110,7 +110,7 @@ AC_CONFIG_FILES([Makefile.global])
 AC_CONFIG_FILES([tools/bgpiotools.h])
 
 AM_COND_IF([HAVE_DOXYGEN],
-  [AC_CONFIG_FILES([doc/Doxyfile])])
+  [AC_CONFIG_FILES([docs/Doxyfile])])
 
 
 # Generate the output
