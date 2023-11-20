@@ -549,13 +549,13 @@ gitdocs pages: check-git-status docs
 	@echo "Preparing for release to github-pages..."
 	git checkout gh-pages
 	( \
-	  mv doc dox; \
-	  mv dox/html doc; \
-	  git add doc; \
+	  mv docs dox; \
+	  mv dox/html docs; \
+	  git add docs; \
 	  git commit -a -m "Doc release `date +%Y%m%d-%H%M%S`"; \
 	  git push; \
 	  echo "Returning to master branch..."; \
-	  rm -rf dox doc 2>&1; \
+	  rm -rf dox docs 2>&1; \
 	  true )
 	git checkout -f master
 
