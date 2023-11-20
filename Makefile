@@ -540,10 +540,10 @@ endif
 docs: docs/html
 
 check-git-status:
-	@(git status | grep 'Your branch is up to date.*origin' 2>&1 &&	\
-	  git status | grep 'On branch master' 2>&1 &&	\
-	  git status | grep 'nothing to commit' 2>&1) || \
-	    (echo "MASTER BRANCH NOT COMMITTED AND PUSHED!" 1>&2 exit 2)
+	@(git status | grep -q 'Your branch is up to date.*origin') && \
+	  (git status | grep -q 'On branch master') && \
+	  (git status | grep -q 'nothing to commit') || \
+	  (echo "MASTER BRANCH NOT COMMITTED AND PUSHED!" 1>&2; exit 2)
 
 gitdocs pages: check-git-status docs
 	@echo "Preparing for release to github-pages..."
