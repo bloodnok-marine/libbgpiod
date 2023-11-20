@@ -1,0 +1,9 @@
+Document: libbgpiod-doc
+Title: libgbpiod Documentation (Doxygen)
+Abstract: The doxygen generated documentation for programming with the libbgpiod
+ libraries.
+Section: Programming/C
+
+Format: HTML
+Index: /usr/share/doc/libbgpiod-dev/html/index.html
+Files: /usr/share/doc/libbgpiod-dev/html/*.html

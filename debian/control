@@ -5,10 +5,10 @@ Maintainer: Marc Munro <marc@bloodnok.com>
 Build-Depends: debhelper-compat (= 12),
                autoconf,
 	       help2man,
+	       doxygen,
 	       m4,
 	       linux-libc-dev (>= 4.8)
 Standards-Version: 4.5.1
-#Build-Depends-Indep: doxygen	       
 Homepage: https://github.com/bloodnok-marine/libbgpiod
 
 Package: libbgpiod0
@@ -36,6 +36,19 @@ Description: Basic command line tools for interacting with GPIO devices
  This package contains the command line tools for the libbgpiod package.
   
 
+Package: libbgpiod-doc
+Section: doc
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends}
+Description: Basic C library and tools for interacting with GPIO devices - docs
+ libbgpiod encapsulates the ioctl calls and data structures for
+ dealing with Linux GPIO devices, providing a simple clean and
+ well-documented API.
+ .
+ This package contains the doxygen generated HTML documentation for
+ the library and command line tools
+
 Package: libbgpiod-dev
 Section: libdevel
 Architecture: linux-any
@@ -43,12 +56,12 @@ Multi-Arch: same
 Depends: ${shlibs:Depends},
          ${misc:Depends},
          libbgpiod0 (= ${binary:Version})
-#Suggests: libgpiod-doc
+Suggests: libgpiod-doc
 Description: Developer API for libgbpiod
  libbgpiod encapsulates the ioctl calls and data structures for
  dealing with Linux GPIO devices, providing a simple clean and
  well-documented API.
  .
  This package contains the static library and header for the libbgpiod
- package. 
+ package.
 

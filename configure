@@ -3891,7 +3891,7 @@ ac_config_files="$ac_config_files tools/bgpiotools.h"
 
 
 if test -z "$HAVE_DOXYGEN_TRUE"; then :
-  ac_config_files="$ac_config_files docs/Doxyfile"
+  ac_config_files="$ac_config_files doc/Doxyfile"
 
 fi
 
@@ -4612,7 +4612,7 @@ do
   case $ac_config_target in
     "Makefile.global") CONFIG_FILES="$CONFIG_FILES Makefile.global" ;;
     "tools/bgpiotools.h") CONFIG_FILES="$CONFIG_FILES tools/bgpiotools.h" ;;
-    "docs/Doxyfile") CONFIG_FILES="$CONFIG_FILES docs/Doxyfile" ;;
+    "doc/Doxyfile") CONFIG_FILES="$CONFIG_FILES doc/Doxyfile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
