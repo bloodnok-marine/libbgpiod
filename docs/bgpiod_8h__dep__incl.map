@@ -1,0 +1,11 @@
+<map id="lib/bgpiod.h" name="lib/bgpiod.h">
+<area shape="rect" id="node1" title="Public header for bgpiod &#45; the basic/bloodnok gpio library Library libbgpiod provides a simple well d..." alt="" coords="545,5,643,32"/>
+<area shape="rect" id="node2" href="$bgpiod_8c.html" title="Library source for bgpiod &#45; the basic/bloodnok gpio library Library bgpiodlib provides a simple and w..." alt="" coords="5,80,103,107"/>
+<area shape="rect" id="node3" href="$bgpiodetect_8c.html" title="bgpiodetect. Executable to identify and describe the gpio chips that are available...." alt="" coords="127,80,274,107"/>
+<area shape="rect" id="node4" href="$bgpioget_8c.html" title="bgpioget. Executable to get gpio line values. This is just like gpioget but uses libbgpio instead of ..." alt="" coords="299,80,425,107"/>
+<area shape="rect" id="node5" href="$bgpioinfo_8c.html" title="bgpioinfo. Executable to identify and describe the gpio lines available from the available gpiochips...." alt="" coords="450,80,581,107"/>
+<area shape="rect" id="node6" href="$bgpiomon_8c.html" title="bgpioget. Executable to monitor and respond to changing gpio line values. This is just like gpiomon b..." alt="" coords="605,80,740,107"/>
+<area shape="rect" id="node7" href="$bgpioset_8c.html" title="bgpioset. Executable to set gpio line values." alt="" coords="765,80,890,107"/>
+<area shape="rect" id="node8" href="$bgpiowatch_8c.html" title="bgpioget. Executable to get watch for changes to gpio line configurations." alt="" coords="914,80,1058,107"/>
+<area shape="rect" id="node9" href="$utils_8c.html" title="Utility functions for the various tools provided with the bgpiod library." alt="" coords="1083,80,1180,107"/>
+</map>

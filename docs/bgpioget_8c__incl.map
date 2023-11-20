@@ -1,0 +1,18 @@
+<map id="tools/bgpioget.c" name="tools/bgpioget.c">
+<area shape="rect" id="node1" title="bgpioget. Executable to get gpio line values. This is just like gpioget but uses libbgpio instead of ..." alt="" coords="310,5,437,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,80,72,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="97,80,167,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="191,80,262,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="287,80,361,107"/>
+<area shape="rect" id="node6" title=" " alt="" coords="386,80,462,107"/>
+<area shape="rect" id="node7" title=" " alt="" coords="486,80,554,107"/>
+<area shape="rect" id="node8" href="$bgpiod_8h.html" title="Public header for bgpiod &#45; the basic/bloodnok gpio library Library libbgpiod provides a simple well d..." alt="" coords="578,80,689,107"/>
+<area shape="rect" id="node14" href="$bgpiotools_8h.html" title="Definitions for helper functions, data and datatypes to support the various tool executables provided..." alt="" coords="813,80,915,107"/>
+<area shape="rect" id="node9" title=" " alt="" coords="305,155,404,181"/>
+<area shape="rect" id="node10" title=" " alt="" coords="429,155,515,181"/>
+<area shape="rect" id="node11" title=" " alt="" coords="540,155,623,181"/>
+<area shape="rect" id="node12" title=" " alt="" coords="647,155,721,181"/>
+<area shape="rect" id="node13" title=" " alt="" coords="745,155,804,181"/>
+<area shape="rect" id="node15" title=" " alt="" coords="829,155,899,181"/>
+<area shape="rect" id="node16" title=" " alt="" coords="923,155,994,181"/>
+</map>

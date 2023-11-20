@@ -1,0 +1,11 @@
+<map id="tools/bgpiotools.h" name="tools/bgpiotools.h">
+<area shape="rect" id="node1" title="Definitions for helper functions, data and datatypes to support the various tool executables provided..." alt="" coords="559,5,697,32"/>
+<area shape="rect" id="node2" href="$bgpiodetect_8c.html" title="bgpiodetect. Executable to identify and describe the gpio chips that are available...." alt="" coords="5,80,152,107"/>
+<area shape="rect" id="node3" href="$bgpioget_8c.html" title="bgpioget. Executable to get gpio line values. This is just like gpioget but uses libbgpio instead of ..." alt="" coords="177,80,303,107"/>
+<area shape="rect" id="node4" href="$bgpioinfo_8c.html" title="bgpioinfo. Executable to identify and describe the gpio lines available from the available gpiochips...." alt="" coords="328,80,459,107"/>
+<area shape="rect" id="node5" href="$bgpiomon_8c.html" title="bgpioget. Executable to monitor and respond to changing gpio line values. This is just like gpiomon b..." alt="" coords="483,80,618,107"/>
+<area shape="rect" id="node6" href="$bgpioset_8c.html" title="bgpioset. Executable to set gpio line values." alt="" coords="643,80,768,107"/>
+<area shape="rect" id="node7" href="$bgpiowatch_8c.html" title="bgpioget. Executable to get watch for changes to gpio line configurations." alt="" coords="792,80,936,107"/>
+<area shape="rect" id="node8" href="$utils_8c.html" title="Utility functions for the various tools provided with the bgpiod library." alt="" coords="961,80,1058,107"/>
+<area shape="rect" id="node9" href="$vectors_8c.html" title="Functions for dealing with string vectors (svector)." alt="" coords="1083,80,1200,107"/>
+</map>

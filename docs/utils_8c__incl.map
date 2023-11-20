@@ -1,0 +1,17 @@
+<map id="tools/utils.c" name="tools/utils.c">
+<area shape="rect" id="node1" title="Utility functions for the various tools provided with the bgpiod library." alt="" coords="287,5,385,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,80,72,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="97,80,167,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="191,80,262,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="397,155,467,181"/>
+<area shape="rect" id="node6" title=" " alt="" coords="337,80,409,107"/>
+<area shape="rect" id="node7" title=" " alt="" coords="434,80,502,107"/>
+<area shape="rect" id="node8" href="$bgpiod_8h.html" title="Public header for bgpiod &#45; the basic/bloodnok gpio library Library libbgpiod provides a simple well d..." alt="" coords="734,80,845,107"/>
+<area shape="rect" id="node14" href="$bgpiotools_8h.html" title="Definitions for helper functions, data and datatypes to support the various tool executables provided..." alt="" coords="526,80,629,107"/>
+<area shape="rect" id="node9" title=" " alt="" coords="884,155,983,181"/>
+<area shape="rect" id="node10" title=" " alt="" coords="1007,155,1094,181"/>
+<area shape="rect" id="node11" title=" " alt="" coords="596,155,679,181"/>
+<area shape="rect" id="node12" title=" " alt="" coords="703,155,777,181"/>
+<area shape="rect" id="node13" title=" " alt="" coords="801,155,860,181"/>
+<area shape="rect" id="node15" title=" " alt="" coords="501,155,571,181"/>
+</map>

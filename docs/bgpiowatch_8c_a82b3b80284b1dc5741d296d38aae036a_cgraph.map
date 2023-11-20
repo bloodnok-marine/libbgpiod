@@ -1,0 +1,16 @@
+<map id="get_gpio_chip" name="get_gpio_chip">
+<area shape="rect" id="node1" title=" " alt="" coords="5,81,117,108"/>
+<area shape="rect" id="node2" href="$bgpiod_8c.html#a61895c620d3c1c79b3c13e62911dfed4" title=" " alt="" coords="165,5,296,32"/>
+<area shape="rect" id="node3" href="$bgpiotools_8h.html#a212c6936bdd64b790c80071e722ca044" title=" " alt="" coords="168,56,293,83"/>
+<area shape="rect" id="node4" href="$bgpiotools_8h.html#ae01790462adf80fad2926ad80b02ac58" title=" " alt="" coords="344,93,464,120"/>
+<area shape="rect" id="node11" href="$bgpiotools_8h.html#ac800bc5f8ed8f91872de119fcb9eb040" title=" " alt="" coords="179,169,283,196"/>
+<area shape="rect" id="node5" href="$bgpiotools_8h.html#a18d0fb13706ab238496e4a23cf122e9b" title=" " alt="" coords="523,68,642,95"/>
+<area shape="rect" id="node7" href="$bgpiotools_8h.html#a4ba8f710d9d5ffbde4918eaed3d70df8" title=" " alt="" coords="512,119,653,145"/>
+<area shape="rect" id="node9" href="$bgpiotools_8h.html#a756378ce4670fa43aa30a7dcb06341d0" title=" " alt="" coords="531,169,634,196"/>
+<area shape="rect" id="node6" href="$vectors_8c.html#a602a10cf53b9ee76cc65fd95d6688169" title=" " alt="" coords="713,68,843,95"/>
+<area shape="rect" id="node8" href="$vectors_8c.html#a485b5cc2226a1de55026347e36e22771" title=" " alt="" coords="701,119,855,145"/>
+<area shape="rect" id="node10" href="$vectors_8c.html#a97bf72909ab8a837c2ecf0e30c17cded" title=" " alt="" coords="743,169,813,196"/>
+<area shape="rect" id="node12" href="$bgpiotools_8h.html#a5213c2d99295b1e5e2b572729f730a62" title=" " alt="" coords="367,195,441,221"/>
+<area shape="rect" id="node13" href="$utils_8c.html#a8a975016950ceada93c6e72b047c6b73" title=" " alt="" coords="344,144,464,171"/>
+<area shape="rect" id="node14" href="$bgpiotools_8h.html#a4b734bc6b8afcbff84b9a171f0f151f1" title=" " alt="" coords="353,245,455,272"/>
+</map>
