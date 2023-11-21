@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">libbgpiod
-   &#160;<span id="projectnumber">0.3.0</span>
+   &#160;<span id="projectnumber">0.3.1</span>
    </div>
    <div id="projectbrief">basic/bloodnok gpio library</div>
   </td>
@@ -87,7 +87,32 @@ $(document).ready(function(){initNavTree('installing-page.html',''); initResizab
 <div class="title">Installing </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"></div></div><!-- contents -->
+<div class="textblock"><h2>DEBIAN PACKAGES </h2>
+<p>The latest pre-built debian packages for a number of architectures can be found in the <code>RELEASES/&lt;version&gt;</code> directory of the github repository.</p>
+<p>The current versions (for amd64 and arm64) can be found here: <a href="https://github.com/bloodnok-marine/libbgpiod/blob/master/RELEASES/0.3.0/">https://github.com/bloodnok-marine/libbgpiod/blob/master/RELEASES/0.3.0/</a></p>
+<p>The packages are named as follows:</p>
+<ul>
+<li><p class="startli">libgpiod0_&lt;version&gt;_&lt;architecture&gt;.deb</p>
+<p class="startli">The libbgpiod library.</p>
+</li>
+<li><p class="startli">libgpiod0-dbgsym_&lt;version&gt;_&lt;architecture&gt;.deb</p>
+<p class="startli">Debug symbols for the above library. You may want these if you want to use a debugger to look inside the library calls.</p>
+</li>
+<li><p class="startli">libbgpiod-dev_&lt;version&gt;_&lt;architecture&gt;.deb</p>
+<p class="startli">The development library. You'll need this to develop code using the library. It contains the C header file and also a static version of the library.</p>
+</li>
+<li><p class="startli">libbgpiod-doc_&lt;version&gt;_all.deb</p>
+<p class="startli">html documentation for libbgpiod. Contains the documentation you are currently reading.</p>
+</li>
+<li><p class="startli">bgpiod_&lt;version&gt;_&lt;architecture&gt;.deb</p>
+<p class="startli">The command line tools for libbgpiod. <br  />
+</p>
+</li>
+<li><p class="startli">bgpiod-dbgsym_&lt;version&gt;_&lt;architecture&gt;.deb</p>
+<p class="startli">Debug symbols for the command line tools. In case you need to debug them. </p>
+</li>
+</ul>
+</div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
