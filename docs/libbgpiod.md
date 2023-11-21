@@ -576,31 +576,31 @@ https://github.com/bloodnok-marine/libbgpiod/blob/master/RELEASES/0.3.0/
 
 The packages are named as follows:
 
-- libgpiod0_<version>_<architecture>.deb
+- `libgpiod0_<version>_<architecture>.deb`
 
   The libbgpiod library.
 
-- libgpiod0-dbgsym_<version>_<architecture>.deb
+- `libgpiod0-dbgsym_<version>_<architecture>.deb`
 
   Debug symbols for the above library.  You may want these if you want
   to use a debugger to look inside the library calls.
 
-- libbgpiod-dev_<version>_<architecture>.deb
+- `libbgpiod-dev_<version>_<architecture>.deb`
 
   The development library.  You'll need this to develop code using the
   library.  It contains the C header file and also a static version of
   the library.
 
-- libbgpiod-doc_<version>_all.deb
+- `libbgpiod-doc_<version>_all.deb`
 
   html documentation for libbgpiod.  Contains the documentation you
   are currently reading.
 
-- bgpiod_<version>_<architecture>.deb
+- `bgpiod_<version>_<architecture>.deb`
 
   The command line tools for libbgpiod.  
 
-- bgpiod-dbgsym_<version>_<architecture>.deb
+- `bgpiod-dbgsym_<version>_<architecture>.deb`
 
   Debug symbols for the command line tools.  In case you need to debug
   them.

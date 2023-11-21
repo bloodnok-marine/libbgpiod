@@ -4,9 +4,9 @@
 This is a gpio device library for Linux.
 
 Note the extra 'b' in libbgpiod.  This is not a fork of the fine
-libbgpiod, nor is it a plug-in replacement.
+libgpiod, nor is it a plug-in replacement.
 
-It does however aims to be functionally equivalent and easier to use.
+It does however aim to be functionally equivalent and easier to use.
 
 This is largely by being more thoroughly
 [documented](https://bloodnok-marine.github.io/libbgpiod).
@@ -14,7 +14,7 @@ This is largely by being more thoroughly
 ## Status
 
 It seems to work, but it's considered alpha quality.  It is still a
-work in progress.  Once the author thinks its good enough, the version
+work in progress.  Once the author thinks it's good enough, the version
 number will get bumped and it will be considered production quality.
 
 It will have been successfully driving real hardware for an extended
