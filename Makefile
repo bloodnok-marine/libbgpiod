@@ -333,9 +333,16 @@ uninstall:
 	$(FEEDBACK) UNINSTALL doc/html
 	$(AT)rm -rf $(DESTDIR)$(prefix)/share/doc/libbgpiod || true
 
+
+################################################################
+# Release targets
+# These create and check tarballs and deb packages.
+#
+
 tarball tar: clean $(TARNAME)
 
 $(TARNAME):
+	@rm $(TARNAME) 2>/dev/null || true
 	@echo "Creating $(TARNAME)..."
 	@cd ..; \
 	 	 tar --create \
