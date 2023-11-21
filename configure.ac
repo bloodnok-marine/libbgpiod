@@ -16,7 +16,7 @@
 # second is version number
 # third is bug report address: TODO: add this
 #
-AC_INIT([libbgpiod], [0.3.0])
+AC_INIT([libbgpiod], [0.3.1])
 
 # Check for source dir existance.
 #
