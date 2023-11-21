@@ -28,3 +28,14 @@ The documentation is [here](https://bloodnok-marine.github.io/libbgpiod).
 
 libbgpiod is distributed under the General Public License version 3.  See
 the [LICENSE](../LICENSE) file.
+
+## Change History
+
+- 0.3
+
+  First version released to github.
+
+- 0.3.1
+
+  Current Development branch.  The development branch will not have
+  tarballs or `.deb` files included in the RELEASES directory.
